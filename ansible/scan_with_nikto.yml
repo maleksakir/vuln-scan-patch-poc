@@ -1,0 +1,7 @@
+- name: Scan web server with Nikto
+  hosts: localhost
+  tasks:
+    - name: Run Nikto Scan
+      shell: nikto -h http://<target_ip> -output nikto_results/scan.txt
+      args:
+        chdir: ../

@@ -1,0 +1,26 @@
+- name: Install vulnerable Apache
+  hosts: web
+  become: true
+  tasks:
+    - name: Install Apache
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+
+    - name: Deploy vulnerable config
+      copy:
+        src: ../files/vuln_apache.conf
+        dest: /etc/apache2/sites-available/000-default.conf
+
+    - name: Enable Directory Listing
+      lineinfile:
+        path: /etc/apache2/apache2.conf
+        regexp: '^Options Indexes'
+        line: 'Options Indexes FollowSymLinks'
+        state: present
+
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted

@@ -1,0 +1,21 @@
+- name: Patch Apache vulnerabilities
+  hosts: web
+  become: true
+  tasks:
+    - name: Deploy secure Apache config
+      copy:
+        src: ../files/secure_apache.conf
+        dest: /etc/apache2/sites-available/000-default.conf
+
+    - name: Add security headers
+      blockinfile:
+        path: /etc/apache2/apache2.conf
+        block: |
+          Header always set X-Content-Type-Options "nosniff"
+          Header always set X-Frame-Options "SAMEORIGIN"
+          Header always set X-XSS-Protection "1; mode=block"
+
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted

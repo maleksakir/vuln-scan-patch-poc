@@ -1,0 +1,7 @@
+.DS_Store
+*.log
+*.zip
+__pycache__/
+*.pyc
+nikto_results/
+grafana_logs/
